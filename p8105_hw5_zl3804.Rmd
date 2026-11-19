@@ -68,3 +68,17 @@ tidy_data = file_df |>
 tidy_data
 ```
 
+```{r}
+ggplot(tidy_data, aes(x = week, y = value, group = id, color = arm)) +
+  geom_line(alpha = 0.6) +
+  geom_point(size = 1, alpha = 0.7) +
+  facet_wrap(~ arm) +                    
+  labs(
+    title = "Longitudinal Trajectories by Study Arm",
+    x = "Week",
+    y = "Outcome Value",
+    color = "Arm"
+  ) +
+  theme_minimal()
+```
+
