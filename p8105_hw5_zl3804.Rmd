@@ -83,6 +83,7 @@ ggplot(tidy_data, aes(x = week, y = value, group = id, color = arm)) +
 ```
 
 # Prob 3
+
 ```{r}
 
 source("source/simulation_functions.R")
@@ -129,3 +130,33 @@ ggplot(summary_stats, aes(x = mu, y = power)) +
   theme_minimal()
 ```
 
+There is a clear positive association between the true effect size ($\mu$) and the power of the test. When $\mu = 0$, the power is approximately 0.05, which matches the nominal Type I error rate. As the true value of $\mu$ increases, the power rises steadily and approaches 1 for larger effect sizes (e.g., $\mu = 5$ or $6$). This demonstrates that larger true effects are much more likely to be detected with the given sample size ($n = 30$) and error variance ($\sigma = 5$).
+
+```{r}
+summary_stats |> 
+  pivot_longer(
+    cols = c(avg_estimate, avg_estimate_rejected),
+    names_to = "type",
+    values_to = "avg_mu_hat"
+  ) |> 
+  ggplot(aes(x = mu, y = avg_mu_hat, color = type)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray40") +
+  labs(
+    title = "Average Estimate of mu",
+    subtitle = "Overall vs. Only significant results",
+    x = expression(True~mu),
+    y = expression(Average~hat(mu)),
+    color = NULL
+  ) +
+  scale_color_manual(
+    values = c("avg_estimate" = "steelblue", 
+               "avg_estimate_rejected" = "firebrick"),
+    labels = c("All simulations", "Only rejected H0")
+  ) +
+  theme_minimal()
+```
+The average estimate of $\hat{\mu}$ across all simulations (blue line) closely follows the true value of $\mu$ (the dashed 45-degree line), indicating that the sample mean is an unbiased estimator under repeated sampling.However, when we restrict attention to only those simulations in which the null hypothesis was rejected (red line), the average estimate is systematically larger than the true $\mu$, especially for smaller effect sizes. This occurs because we are conditioning on a significant result: samples that produced larger (more extreme) estimates are more likely to reject $H_0$, while samples with estimates closer to zero are filtered out.
+
+Consequently, the average of $\hat{\mu}$ among significant results is biased upward relative to the true value. This is a classic example of selection bias (sometimes called the “winner’s curse”) that arises when focusing only on statistically significant findings.
