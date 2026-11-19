@@ -5,3 +5,24 @@ date: "2026-11-18"
 output: github_document
 ---
 
+```{r}
+library(tidyverse)
+```
+
+# Prob 1
+
+```{r}
+birthdays= sample(1:365,size=5,replace = TRUE)
+
+repeated_birthdays = length(unique(birthdays))<5
+
+repeated_birthdays
+```
+turn into function
+run it  a bunch
+```{r}
+source("source/birthday_repeated.R")
+
+birthday_repeated(147)
+```
+
