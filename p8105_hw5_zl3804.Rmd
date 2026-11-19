@@ -82,3 +82,25 @@ ggplot(tidy_data, aes(x = week, y = value, group = id, color = arm)) +
   theme_minimal()
 ```
 
+# Prob 3
+```{r}
+
+source("source/simulation_functions.R")
+
+
+sim_settings <- expand_grid(
+  mu = 0:6,
+  iter = 1:5000
+)
+
+
+sim_results = sim_settings |> 
+  mutate(
+    result = map(mu, ~ sim_ttest(mu = .x))
+  ) |> 
+  unnest(result)
+
+
+head(sim_results)
+```
+
