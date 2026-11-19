@@ -104,3 +104,28 @@ sim_results = sim_settings |>
 head(sim_results)
 ```
 
+```{r}
+
+summary_stats <- sim_results |> 
+  group_by(mu) |> 
+  summarize(
+    power = mean(p.value < 0.05),
+    avg_estimate = mean(estimate),
+    avg_estimate_rejected = mean(estimate[p.value < 0.05]),
+    .groups = "drop"
+  )
+
+summary_stats
+```
+```{r}
+ggplot(summary_stats, aes(x = mu, y = power)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  labs(
+    title = "Power of One-sample t-test",
+    x = expression(True~mu),
+    y = "Power (Proportion of rejected H0)"
+  ) +
+  theme_minimal()
+```
+
