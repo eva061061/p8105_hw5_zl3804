@@ -25,4 +25,46 @@ source("source/birthday_repeated.R")
 
 birthday_repeated(147)
 ```
+# Prob 2
+```{r}
+
+file_df = 
+  tibble(
+  file_path = list.files("data", pattern = "\\.csv$", full.names = TRUE)
+)
+
+
+file_df = file_df |> 
+  mutate(
+    data = map(file_path, read_csv)
+  )
+
+
+file_df = file_df |> 
+  mutate(
+    file_name = basename(file_path),                     
+    arm = str_extract(file_name, "^[a-z]+"),              
+    id  = str_extract(file_name, "\\d+")                 
+  )
+
+
+tidy_data = file_df |> 
+  select(arm, id, data) |> 
+  unnest(data) |>                                        
+  pivot_longer(
+    cols = starts_with("week_"),
+    names_to = "week",
+    values_to = "value",
+    names_prefix = "week_"                              
+  ) |> 
+  mutate(
+    week = as.numeric(week),
+    id = as.numeric(id),
+    arm = factor(arm, levels = c("con", "exp"), 
+                 labels = c("Control", "Experimental"))
+  )
+
+
+tidy_data
+```
 
