@@ -81,6 +81,12 @@ ggplot(tidy_data, aes(x = week, y = value, group = id, color = arm)) +
   ) +
   theme_minimal()
 ```
+The spaghetti plot displays the individual outcome trajectories over 8 weeks for participants in the Control and Experimental arms.In the Control group, the trajectories are relatively flat or fluctuating, with most values remaining between approximately -2 and 4 and no clear overall increasing or decreasing trend.In contrast, participants in the Experimental group show a consistent upward trend over time.
+
+Values generally start lower in the early weeks and increase steadily, with many trajectories ending between 4 and 7.5 by week 8.
+
+Overall, the Experimental arm exhibits both higher outcome levels and a clearer positive trajectory compared to the more stable and lower-valued trajectories observed in the Control arm.
+
 
 # Prob 3
 
