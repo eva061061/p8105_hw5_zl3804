@@ -25,6 +25,19 @@ source("source/birthday_repeated.R")
 
 birthday_repeated(147)
 ```
+```{r}
+birthday_results_df =
+  tibble(
+    number_of_people =rep(5,10)  #生成10个sample，每个sample都是五个人
+  ) |>
+  mutate(
+    repeated = map_lgl(number_of_people, birthday_repeated)  #需要返回逻辑向量时需要用map_lgl而不是map，map默认返回的是list
+  )
+```
+
+
+
+
 # Prob 2
 ```{r}
 
